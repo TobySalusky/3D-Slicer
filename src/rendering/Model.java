@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 public class Model {
 
+    // TODO: add convex hull
+
     protected Polygon[] polygons;
 
     public Model(String fileName) {
@@ -45,8 +47,13 @@ public class Model {
 
                 String line = length.nextLine();
 
-                if (line.length() >= 2) if (line.substring(0, 1).equals("v")) pointCount++;
-				else if (line.substring(0, 1).equals("f")) faceCount++;
+                if (line.length() >= 2) {
+                    if (line.startsWith("v")) {
+                        pointCount++;
+                    } else if (line.startsWith("f")) {
+                        faceCount++;
+                    }
+                }
 
             }
             length.close();
@@ -64,13 +71,15 @@ public class Model {
 
                 String line = reader.nextLine();
 
-                if (line.length() >= 2) if (line.substring(0, 1).equals("v")) {
-					points[pointIndex] = parsePoint(line.substring(2));
-					pointIndex++;
-				} else if (line.substring(0, 1).equals("f")) {
-					polygons[faceIndex] = parseFace(line.substring(2), points);
-					faceIndex++;
-				}
+                if (line.length() >= 2) {
+                    if (line.startsWith("v")) {
+                        points[pointIndex] = parsePoint(line.substring(2));
+                        pointIndex++;
+                    } else if (line.startsWith("f")) {
+                        polygons[faceIndex] = parseFace(line.substring(2), points);
+                        faceIndex++;
+                    }
+                }
 
             }
             reader.close();
@@ -111,13 +120,15 @@ public class Model {
 
     public void rot(int times) {
 
-        for (int i = 0; i < times; i++)
-			for (Polygon poly : polygons)
-				for (Point3D point : poly.points) {
-					point.x *= 0.99999F + Math.random() * 0.000001F;
-					point.y *= 0.99999F + Math.random() * 0.000001F;
-					point.z *= 0.99999F + Math.random() * 0.000001F;
-				}
+        for (int i = 0; i < times; i++) {
+            for (Polygon poly : polygons) {
+                for (Point3D point : poly.points) {
+                    point.x *= 0.99999F + Math.random() * 0.000001F;
+                    point.y *= 0.99999F + Math.random() * 0.000001F;
+                    point.z *= 0.99999F + Math.random() * 0.000001F;
+                }
+            }
+        }
     }
 
     private Polygon parseFace(String line, Point3D[] points) {
