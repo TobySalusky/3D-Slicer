@@ -32,6 +32,10 @@ public class Point3D {
 
     }
 
+    public void update(Origin origin) {
+
+    }
+
     public float distanceToXZ(Point3D point) {
         return (float) Math.sqrt(Math.pow(point.x - x, 2) + Math.pow(point.z - z, 2));
     }
@@ -67,17 +71,5 @@ public class Point3D {
 
     public Vector3D subtract(Point3D point) {
         return new Vector3D(x - point.x, y - point.y, z - point.z);
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public float getZ() {
-        return z;
     }
 }

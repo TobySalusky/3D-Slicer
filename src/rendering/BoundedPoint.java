@@ -2,29 +2,29 @@ package rendering;
 
 public class BoundedPoint extends Point3D {
 
-    protected Point3D origin;
+    protected float offX;
+    protected float offY;
+    protected float offZ;
 
-    protected float angleX;
-    protected float angleY;
-
-    public BoundedPoint(float x, float y, float z, Point3D origin) {
+    public BoundedPoint(float x, float y, float z, Origin origin) {
         super(x, y, z);
 
-        this.origin = origin;
+        findRelativePosition(origin);
     }
 
     @Override
-    public float getX() {
-        return x;
+    public void update(Origin origin) {
+
+        this.x = origin.x + offX;
+        this.y = origin.y + offY;
+        this.z = origin.z + offZ;
+
     }
 
-    @Override
-    public float getY() {
-        return y;
-    }
+    public void findRelativePosition(Origin origin) {
 
-    @Override
-    public float getZ() {
-        return z;
+        offX = x - origin.x;
+        offY = y - origin.y;
+        offZ = z - origin.z;
     }
 }

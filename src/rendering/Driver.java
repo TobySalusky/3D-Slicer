@@ -51,7 +51,7 @@ public class Driver extends JPanel {
 
         //rect = new rendering.Rect3D(points[0], points[24], points[49], points[25], -70);
 
-        model = new Model("models//gourd.obj");
+        model = new Model("models//gourd.obj", new Origin(0,0,0));
         model.shade(new Vector3D(-1, -1, 0));
 
         //timer
@@ -83,17 +83,31 @@ public class Driver extends JPanel {
         int inputX = 0;
         int inputZ = 0;
 
-        if (aPressed) inputX++;
-        if (dPressed) inputX--;
+        if (aPressed) {
+            inputX++;
+        }
+        if (dPressed) {
+            inputX--;
+        }
 
-        if (wPressed) inputZ++;
-        if (sPressed) inputZ--;
+        if (wPressed) {
+            inputZ++;
+        }
+        if (sPressed) {
+            inputZ--;
+        }
 
-        if (inputZ != 0 || inputX != 0) camera.move((float) Math.atan2(-inputX, inputZ));
+        if (inputZ != 0 || inputX != 0) {
+            camera.move((float) Math.atan2(-inputX, inputZ));
+        }
 
         int inputY = 0;
-        if (spacePressed) inputY++;
-        if (shiftPressed) inputY--;
+        if (spacePressed) {
+            inputY++;
+        }
+        if (shiftPressed) {
+            inputY--;
+        }
 
         camera.fly(inputY);
     }
@@ -117,6 +131,7 @@ public class Driver extends JPanel {
             //camera.draw(rect);
             //camera.draw(model);
 
+            model.origin.move(-0.01F,0F,0F);
 
             camera.preRender(model);
             //camera.preRender(rect);

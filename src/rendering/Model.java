@@ -11,8 +11,11 @@ public class Model {
 
     protected Polygon[] polygons;
 
-    public Model(String fileName) {
+    protected Origin origin;
 
+    public Model(String fileName, Origin origin) {
+
+        this.origin = origin;
         parseObj(fileName);
 
     }
@@ -59,7 +62,7 @@ public class Model {
             length.close();
 
 
-            Point3D[] points = new Point3D[pointCount];
+            Point3D[] points = new BoundedPoint[pointCount];
             int pointIndex = 0;
 
             polygons = new Polygon[faceCount];
@@ -84,6 +87,7 @@ public class Model {
             }
             reader.close();
 
+            origin.setPoints((BoundedPoint[]) points);
 
         } catch (FileNotFoundException e) {
 
@@ -103,7 +107,7 @@ public class Model {
 
         float z = Float.parseFloat(line);
 
-        return new Point3D(x, y, z);
+        return new BoundedPoint(x, y, z, origin);
 
     }
 
