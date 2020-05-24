@@ -50,6 +50,10 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
                 driver.shiftPressed = true;
                 break;
 
+            case KeyEvent.VK_CONTROL:
+                driver.getCamera().setSpeed(Camera.defaultSpeed * 5);
+                break;
+
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);
                 break;
@@ -77,6 +81,10 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
                 break;
             case KeyEvent.VK_SHIFT:
                 driver.shiftPressed = false;
+                break;
+
+            case KeyEvent.VK_CONTROL:
+                driver.getCamera().setSpeed(Camera.defaultSpeed);
                 break;
         }
     }

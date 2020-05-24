@@ -55,4 +55,8 @@ public class Polygon {
         Vector3D facing = getFacing();
         return new Point3D(from.x + facing.x, from.y + facing.y, from.z + facing.z);
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
 }

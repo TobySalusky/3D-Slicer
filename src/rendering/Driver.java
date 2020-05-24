@@ -1,10 +1,15 @@
 package rendering;
 
+import generation.Chunk;
+import generation.ChunkMap;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Driver extends JPanel {
 
@@ -25,6 +30,10 @@ public class Driver extends JPanel {
     //private rendering.Rect3D rect;
     private Model model;
 
+    private ChunkMap chunkMap;
+
+    private List<Chunk> renderChunks;
+
     public Driver() {
 
         //buffered image
@@ -33,23 +42,12 @@ public class Driver extends JPanel {
 
         camera = new Camera(g, 0, 0, -10, WIDTH / 2, HEIGHT / 2);
 
-		/*for (int i = 0; i < 25; i++) {
-			points[i] = new rendering.Point3D(30,50,10*i);
-		}
-		
-		for (int i = 0; i < 25; i++) {
-			points[i+25] = new rendering.Point3D(-30,50,10*i);
-		}
-		
-		for (int i = 0; i < 25; i++) {
-			points[i+50] = new rendering.Point3D(30,-50,10*i);
-		}
-		
-		for (int i = 0; i < 25; i++) {
-			points[i+75] = new rendering.Point3D(-30,-50,10*i);
-		}*/
+        chunkMap = new ChunkMap();
 
-        //rect = new rendering.Rect3D(points[0], points[24], points[49], points[25], -70);
+        renderChunks = new ArrayList<>();
+
+        addRenderChunks(-1, -1, -1, 1, 1, 1);
+
 
         model = new Model("models//gourd.obj", new Origin(0,0,0));
         model.shade(new Vector3D(-1, -1, 0));
@@ -60,6 +58,21 @@ public class Driver extends JPanel {
 
         // input
         input = new Input(this);
+
+
+    }
+
+    public void addRenderChunks(int x1, int y1, int z1, int x2, int y2, int z2) {
+
+        for (int x = x1; x <= x2; x++) {
+            for (int y = y1; y <= y2; y++) {
+                for (int z = z1; z <= z2; z++) {
+                    renderChunks.add(chunkMap.get(x, y, z));
+                }
+            }
+        }
+
+
     }
 
     public static void main(String[] args) {
@@ -131,20 +144,29 @@ public class Driver extends JPanel {
             //camera.draw(rect);
             //camera.draw(model);
 
-            model.origin.move(-0.01F,0F,0F);
+            //model.origin.move(-0.01F,0F,0F);
 
-            camera.preRender(model);
-            //camera.preRender(rect);
+            //camera.preRender(model);
+            for (Chunk chunk : renderChunks) {
+                camera.preRender(chunk);
+            }
+            //camera.renderAdd(model);
+            for (Chunk chunk : renderChunks) {
+                camera.renderAdd(chunk);
+            }
 
-            camera.renderAdd(model);
-            //camera.renderAdd(rect);
-
-            //model.goWild(1);
             camera.renderView();
+
+            //camera.drawTile(chunk.getTiles()[1][0][0]);
+            //camera.drawTile(chunk.getTiles()[0][1][0]);
+            //camera.drawTile(chunk.getTiles()[0][0][1]);
 
             repaint();
         }
 
     }
 
+    public Camera getCamera() {
+        return camera;
+    }
 }

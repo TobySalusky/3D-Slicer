@@ -6,7 +6,6 @@
         <option value="activate" />
         <option value="activateOnBatch" />
         <option value="missingOverrideAnnotation" />
-        <option value="useBlocks" />
         <option value="generateSerialVersionUID" />
         <option value="suppressAnnotation" />
       </set>
