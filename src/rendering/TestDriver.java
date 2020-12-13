@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-public class Driver extends JPanel {
+public class TestDriver extends JPanel {
 
     static final int WIDTH = 960;
     static final int HEIGHT = 540;
@@ -25,7 +25,7 @@ public class Driver extends JPanel {
     //private rendering.Rect3D rect;
     private Model model;
 
-    public Driver() {
+    public TestDriver() {
 
         //buffered image
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -36,15 +36,15 @@ public class Driver extends JPanel {
 		/*for (int i = 0; i < 25; i++) {
 			points[i] = new rendering.Point3D(30,50,10*i);
 		}
-		
+
 		for (int i = 0; i < 25; i++) {
 			points[i+25] = new rendering.Point3D(-30,50,10*i);
 		}
-		
+
 		for (int i = 0; i < 25; i++) {
 			points[i+50] = new rendering.Point3D(30,-50,10*i);
 		}
-		
+
 		for (int i = 0; i < 25; i++) {
 			points[i+75] = new rendering.Point3D(-30,-50,10*i);
 		}*/
@@ -52,7 +52,7 @@ public class Driver extends JPanel {
         //rect = new rendering.Rect3D(points[0], points[24], points[49], points[25], -70);
 
         model = new Model("models//gourd.obj", new Origin(0,0,0));
-        model.shade(new Vector3D(-1, -1, 0));
+        //model.shade(new Vector3D(-1, -1, 0));
 
         //timer
         timer = new Timer(0, new TimerListener());
@@ -68,7 +68,7 @@ public class Driver extends JPanel {
         frame.setSize(WIDTH, HEIGHT); //+17 +48
         frame.setLocation(480, 270);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new Driver());
+        frame.setContentPane(new TestDriver());
         frame.setVisible(true);
     }
 

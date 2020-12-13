@@ -22,4 +22,23 @@ public class Origin extends Point3D {
             point.update(this);
         }
     }
+
+    public void move(Vector3D vec) {
+        move(vec.x, vec.y, vec.z);
+    }
+
+    public void moveTo(float x, float y, float z) {
+        move(new Vector3D(x - this.x, y - this.y, z - this.z));
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+    public float getZ() {
+        return z;
+    }
 }

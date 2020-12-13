@@ -20,7 +20,16 @@ public class Model {
 
     }
 
-    public void shade(Vector3D light) {
+    public Model(Rect3D rect, Origin origin) {
+
+        this.origin = origin;
+
+        polygons = rect.getPolygons();
+        origin.setPoints(rect.getPoints());
+
+    }
+
+    public void shade(Vector3D light, Color color) {
 
         light = light.reverse().unit();
 
@@ -28,8 +37,7 @@ public class Model {
 
             float brightness = light.dot(poly.getFacing().unit()) / 2 + 0.5F;
 
-            int col = (int) (brightness * 255);
-            poly.color = new Color(col / 2, col, col / 2);
+            poly.color = new Color((int) (color.getRed() * brightness), (int) (color.getGreen() * brightness), (int) (color.getBlue() * brightness));
 
         }
 

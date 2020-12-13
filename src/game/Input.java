@@ -1,10 +1,12 @@
-package rendering;
+package game;
+
+import game.Driver;
 
 import java.awt.event.*;
 
 public class Input implements MouseListener, MouseMotionListener, KeyListener {
 
-    private TestDriver driver;
+    private Driver driver;
 
     private float mouseX = 0;
     private float mouseY = 0;
@@ -12,7 +14,7 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
     private float oldMouseX = 0;
     private float oldMouseY = 0;
 
-    public Input(TestDriver driver) {
+    public Input(Driver driver) {
         this.driver = driver;
 
         this.driver.addKeyListener(this);
@@ -49,6 +51,10 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
             case KeyEvent.VK_SHIFT:
                 driver.shiftPressed = true;
                 break;
+
+                case KeyEvent.VK_M:
+                    driver.switchModes();
+                    break;
 
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);

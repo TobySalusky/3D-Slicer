@@ -1,5 +1,8 @@
 package rendering;
 
+import game.MovingRect;
+import game.Player;
+
 import java.awt.*;
 
 public class Camera extends Point3D {
@@ -47,30 +50,33 @@ public class Camera extends Point3D {
         int i1 = low;
         int i2 = mid + 1;
 
-        for (int k = low; k <= high; k++)
-			if (i1 > mid) {
+        for (int k = low; k <= high; k++) {
+            if (i1 > mid) {
 
-				cb[k] = a[i2];
-				i2++;
+                cb[k] = a[i2];
+                i2++;
 
-			} else if (i2 > high) {
+            } else if (i2 > high) {
 
-				cb[k] = a[i1];
-				i1++;
+                cb[k] = a[i1];
+                i1++;
 
-			} else if (a[i1].compareTo(a[i2], from) > 0) {
+            } else if (a[i1].compareTo(a[i2], from) > 0) {
 
-				cb[k] = a[i1];
-				i1++;
+                cb[k] = a[i1];
+                i1++;
 
-			} else {
+            } else {
 
-				cb[k] = a[i2];
-				i2++;
+                cb[k] = a[i2];
+                i2++;
 
-			}
+            }
+        }
 
-        for (int k = low; k <= high; k++) a[k] = cb[k];
+        for (int k = low; k <= high; k++) {
+            a[k] = cb[k];
+        }
 
     }
 
@@ -99,7 +105,9 @@ public class Camera extends Point3D {
 
     public void preRender(Rect3D rect) {
 
-        for (Quad quad : rect.quads) preRender(quad);
+        for (Quad quad : rect.quads) {
+            preRender(quad);
+        }
 
     }
 
@@ -113,7 +121,9 @@ public class Camera extends Point3D {
 
     public void renderAdd(Polygon[] polygons) {
 
-        if (render == null) render = new Polygon[renderCount];
+        if (render == null) {
+            render = new Polygon[renderCount];
+        }
 
         for (Polygon poly : polygons) {
 
@@ -129,7 +139,9 @@ public class Camera extends Point3D {
     }
 
     public void renderAdd(Rect3D rect) {
-        for (Quad quad : rect.quads) renderAdd(quad);
+        for (Quad quad : rect.quads) {
+            renderAdd(quad);
+        }
     }
 
     public void renderAdd(Model model) {
@@ -138,7 +150,9 @@ public class Camera extends Point3D {
 
     public void draw(Point3D[] points) {
 
-        for (Point3D point : points) draw(point);
+        for (Point3D point : points) {
+            draw(point);
+        }
 
     }
 
@@ -148,7 +162,11 @@ public class Camera extends Point3D {
 
     public void draw(Quad[] quads) {
 
-        for (Quad quad : quads) if (quad != null) draw(quad);
+        for (Quad quad : quads) {
+            if (quad != null) {
+                draw(quad);
+            }
+        }
 
     }
 
@@ -158,14 +176,21 @@ public class Camera extends Point3D {
 
     public void draw(Polygon[] polygons) {
 
-        for (Polygon poly : polygons) if (poly != null) draw(poly);
+        for (Polygon poly : polygons) {
+            if (poly != null) {
+                draw(poly);
+            }
+        }
 
     }
 
     public void draw(Polygon poly) {
 
-        if (poly.color != null) fill(poly);
-		else drawSkeleton(poly);
+        if (poly.color != null) {
+            fill(poly);
+        } else {
+            drawSkeleton(poly);
+        }
 
     }
 
@@ -186,8 +211,9 @@ public class Camera extends Point3D {
 
             Point[] screenPoints = new Point[poly.points.length];
 
-            for (int i = 0; i < screenPoints.length; i++)
-				screenPoints[i] = toScreen(poly.points[i].rotated(this, angleX, angleY));
+            for (int i = 0; i < screenPoints.length; i++) {
+                screenPoints[i] = toScreen(poly.points[i].rotated(this, angleX, angleY));
+            }
 
             fill(poly.color, screenPoints);
         }
@@ -327,6 +353,29 @@ public class Camera extends Point3D {
         angleY += moveY;
 
         angleY = (float) Math.max(Math.min(angleY, Math.PI / 2), -Math.PI / 2);
+
+    }
+
+    public void follow(MovingRect target) {
+
+        this.x = target.x;
+
+    }
+
+    public void run(Player player) {
+        this.x += player.constRun;
+    }
+
+    public void setRotations(float angleX, float angleY) {
+        this.angleX = angleX;
+        this.angleY = angleY;
+    }
+
+    public void setLocation(float x, float y, float z) {
+
+        this.x = x;
+        this.y = y;
+        this.z = z;
 
     }
 }

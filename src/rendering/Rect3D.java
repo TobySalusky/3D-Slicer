@@ -2,10 +2,12 @@ package rendering;
 
 public class Rect3D {
 
+    private BoundedPoint[] points;
     protected Quad[] quads = new Quad[6];
 
-    public Rect3D(Point3D p1, Point3D p2, Point3D p3, Point3D p4, Point3D p5, Point3D p6, Point3D p7, Point3D p8) {
+    public Rect3D(BoundedPoint p1, BoundedPoint p2, BoundedPoint p3, BoundedPoint p4, BoundedPoint p5, BoundedPoint p6, BoundedPoint p7, BoundedPoint p8) {
 
+        points = new BoundedPoint[]{p1, p2, p3, p4, p5, p6, p7, p8};
         quads[0] = new Quad(p4, p3, p2, p1);
         quads[1] = new Quad(p7, p8, p5, p6);
         quads[2] = new Quad(p1, p2, p6, p5);
@@ -15,10 +17,28 @@ public class Rect3D {
 
     }
 
-    public Rect3D(Point3D p1, Point3D p2, Point3D p3, Point3D p4, float height) {
+    public Polygon[] getPolygons() {
+        Polygon[] polygons = new Polygon[12];
 
-        this(p1, p2, p3, p4, new Point3D(p1.x, p1.y + height, p1.z), new Point3D(p2.x, p2.y + height, p2.z), new Point3D(p3.x, p3.y + height, p3.z), new Point3D(p4.x, p4.y + height, p4.z));
+        int i = 0;
+        for (Quad quad : quads) {
+            polygons[i++] = quad.polygons[i % 2];
+            polygons[i++] = quad.polygons[i % 2];
+        }
 
+        return polygons;
+    }
+
+    public Rect3D(Origin origin, float width, float height, float length) {
+
+        this(new BoundedPoint(origin.x - width/ 2F, origin.y - height / 2F, origin.z + length / 2F, origin), new BoundedPoint(origin.x + width/ 2F, origin.y - height / 2F, origin.z + length / 2F, origin),
+                new BoundedPoint(origin.x + width/ 2F, origin.y - height / 2F, origin.z - length / 2F, origin), new BoundedPoint(origin.x - width/ 2F, origin.y - height / 2F, origin.z - length / 2F, origin),
+                new BoundedPoint(origin.x - width/ 2F, origin.y + height / 2F, origin.z + length / 2F, origin), new BoundedPoint(origin.x + width/ 2F, origin.y + height / 2F, origin.z + length / 2F, origin),
+                new BoundedPoint(origin.x + width/ 2F, origin.y + height / 2F, origin.z - length / 2F, origin), new BoundedPoint(origin.x - width/ 2F, origin.y + height / 2F, origin.z - length / 2F, origin));
+    }
+
+    public BoundedPoint[] getPoints() {
+        return points;
     }
 
 }
