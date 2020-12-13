@@ -78,13 +78,21 @@ public class Point3D {
 
     }
 
+    public Point3D copy() {
+        return new Point3D(x, y, z);
+    }
+
+    public Point3D added(Vector3D vector) {
+        return new Point3D(x + vector.x, y + vector.y, z + vector.z);
+    }
+
     public Vector3D subtract(Point3D point) {
         return new Vector3D(x - point.x, y - point.y, z - point.z);
     }
 
     @Override
     public String toString() {
-        return super.toString() + ": x = " + x + ", y = " + y + ", z = " + z;
+        return "(" + super.toString() + ": x = " + x + ", y = " + y + ", z = " + z + ")";
     }
 
     @Override

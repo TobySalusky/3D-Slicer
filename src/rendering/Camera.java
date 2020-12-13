@@ -16,7 +16,7 @@ public class Camera extends Point3D {
 
     private Graphics g;
 
-    public static final float defaultSpeed = 0.1F;
+    public static final float defaultSpeed = 0.01F;
     private float speed = defaultSpeed;
 
 
@@ -198,7 +198,7 @@ public class Camera extends Point3D {
 
     public void fill(Polygon poly) {
 
-        if (canSee(poly)) {
+        //if (canSee(poly)) {
 
 			/*Point p1 = toScreen(poly.points[0].rotated(this, angleX, angleY));
 			Point p2 = toScreen(poly.points[1].rotated(this, angleX, angleY));
@@ -218,7 +218,7 @@ public class Camera extends Point3D {
             }
 
             fill(poly.color, screenPoints);
-        }
+        //}
 
     }
 
@@ -257,7 +257,7 @@ public class Camera extends Point3D {
 
     public void drawSkeleton(Polygon poly) {
 
-        if (canSee(poly)) {
+        //if (canSee(poly)) {
 
             //drawFacing(poly);
 
@@ -268,7 +268,7 @@ public class Camera extends Point3D {
             drawLine(p1, p2);
             drawLine(p2, p3);
             drawLine(p3, p1);
-        }
+        //}
     }
 
     public void drawFacing(Polygon poly) {
