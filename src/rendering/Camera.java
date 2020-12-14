@@ -2,6 +2,8 @@ package rendering;
 
 import game.MovingRect;
 import game.Player;
+import generation.Chunk;
+import generation.Tile;
 
 import java.awt.*;
 
@@ -16,7 +18,9 @@ public class Camera extends Point3D {
 
     private Graphics g;
 
-    private float speed = 0.05F;
+    public static final float defaultSpeed = 0.01F;
+    private float speed = defaultSpeed;
+
 
     private Polygon[] render;
     private int renderCount;
@@ -196,7 +200,7 @@ public class Camera extends Point3D {
 
     public void fill(Polygon poly) {
 
-        if (canSee(poly)) {
+        //if (canSee(poly)) {
 
 			/*Point p1 = toScreen(poly.points[0].rotated(this, angleX, angleY));
 			Point p2 = toScreen(poly.points[1].rotated(this, angleX, angleY));
@@ -216,7 +220,7 @@ public class Camera extends Point3D {
             }
 
             fill(poly.color, screenPoints);
-        }
+        //}
 
     }
 
@@ -255,7 +259,7 @@ public class Camera extends Point3D {
 
     public void drawSkeleton(Polygon poly) {
 
-        if (canSee(poly)) {
+        //if (canSee(poly)) {
 
             //drawFacing(poly);
 
@@ -266,7 +270,7 @@ public class Camera extends Point3D {
             drawLine(p1, p2);
             drawLine(p2, p3);
             drawLine(p3, p1);
-        }
+        //}
     }
 
     public void drawFacing(Polygon poly) {
@@ -302,12 +306,49 @@ public class Camera extends Point3D {
         }
     }
 
+    public void preRender(Chunk chunk) {
+
+        int count = 0;
+
+        for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+            for (int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+                for (int z = 0; z < Chunk.CHUNK_SIZE; z++) {
+                    count += chunk.getTiles()[x][y][z].getPolygons().length;
+                }
+            }
+        }
+
+        renderCount += count;
+    }
+
+    public void renderAdd(Chunk chunk) {
+
+        for (int x = 0; x < Chunk.CHUNK_SIZE; x++) {
+            for (int y = 0; y < Chunk.CHUNK_SIZE; y++) {
+                for (int z = 0; z < Chunk.CHUNK_SIZE; z++) {
+                    chunk.getTiles()[x][y][z].shade(new Vector3D(0.3F, -1, 0.1F));
+                    renderAdd(chunk.getTiles()[x][y][z].getPolygons());
+                }
+            }
+        }
+
+    }
+
+    public void drawTile(Tile tile) {
+
+        tile.shade(new Vector3D(0, -1, 0));
+
+        for (Polygon poly : tile.getPolygons()) {
+            draw(poly);
+        }
+    }
+
     public void draw(Point3D point) {
 
         Point drawPoint = toScreen(point.rotated(this, angleX, angleY));
 
         if (drawPoint != null) {
-            int radius = (int) Math.max((lastDistance), 1);
+            int radius = (int) (Math.max((lastDistance), 1) / 10F);
             g.setColor(Color.WHITE);
             g.fillOval(drawPoint.x - radius, drawPoint.y - radius, radius * 2, radius * 2);
         }
@@ -376,6 +417,13 @@ public class Camera extends Point3D {
         this.x = x;
         this.y = y;
         this.z = z;
+    }
 
+    public float getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(float speed) {
+        this.speed = speed;
     }
 }

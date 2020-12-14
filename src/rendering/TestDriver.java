@@ -1,12 +1,18 @@
 package rendering;
 
+import generation.Chunk;
+import generation.ChunkMap;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class TestDriver extends JPanel {
+public class Driver extends JPanel {
 
     static final int WIDTH = 960;
     static final int HEIGHT = 540;
@@ -25,7 +31,11 @@ public class TestDriver extends JPanel {
     //private rendering.Rect3D rect;
     private Model model;
 
-    public TestDriver() {
+    private ChunkMap chunkMap;
+
+    private List<Chunk> renderChunks;
+
+    public Driver() {
 
         //buffered image
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -33,26 +43,15 @@ public class TestDriver extends JPanel {
 
         camera = new Camera(g, 0, 0, -10, WIDTH / 2, HEIGHT / 2);
 
-		/*for (int i = 0; i < 25; i++) {
-			points[i] = new rendering.Point3D(30,50,10*i);
-		}
+        chunkMap = new ChunkMap();
 
-		for (int i = 0; i < 25; i++) {
-			points[i+25] = new rendering.Point3D(-30,50,10*i);
-		}
+        renderChunks = new ArrayList<>();
 
-		for (int i = 0; i < 25; i++) {
-			points[i+50] = new rendering.Point3D(30,-50,10*i);
-		}
+        addRenderChunks(-1, -1, -1, 1, 1, 1);
 
-		for (int i = 0; i < 25; i++) {
-			points[i+75] = new rendering.Point3D(-30,-50,10*i);
-		}*/
-
-        //rect = new rendering.Rect3D(points[0], points[24], points[49], points[25], -70);
 
         model = new Model("models//gourd.obj", new Origin(0,0,0));
-        //model.shade(new Vector3D(-1, -1, 0));
+        model.shade(new Vector3D(-1, -1, 0));
 
         //timer
         timer = new Timer(0, new TimerListener());
@@ -60,6 +59,24 @@ public class TestDriver extends JPanel {
 
         // input
         input = new Input(this);
+
+        // testing:
+        Plane plane = new Plane(new Point3D(0, 0F, 0), new Vector3D(0, 1, 0));
+
+        model.polygons = PlaneSlicer.slices(model.polygons, new LineSeg(new Point3D(-1.5F, -1.5F, 0), new Point3D(1F, 1.5F, 0)), 20, Color.red, Color.blue);
+    }
+
+    public void addRenderChunks(int x1, int y1, int z1, int x2, int y2, int z2) {
+
+        for (int x = x1; x <= x2; x++) {
+            for (int y = y1; y <= y2; y++) {
+                for (int z = z1; z <= z2; z++) {
+                    renderChunks.add(chunkMap.get(x, y, z));
+                }
+            }
+        }
+
+
     }
 
     public static void main(String[] args) {
@@ -68,7 +85,7 @@ public class TestDriver extends JPanel {
         frame.setSize(WIDTH, HEIGHT); //+17 +48
         frame.setLocation(480, 270);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new TestDriver());
+        frame.setContentPane(new Driver());
         frame.setVisible(true);
     }
 
@@ -131,20 +148,29 @@ public class TestDriver extends JPanel {
             //camera.draw(rect);
             //camera.draw(model);
 
-            model.origin.move(-0.01F,0F,0F);
+            //model.origin.move(-0.01F,0F,0F);
 
             camera.preRender(model);
-            //camera.preRender(rect);
-
+            for (Chunk chunk : renderChunks) {
+                //camera.preRender(chunk);
+            }
             camera.renderAdd(model);
-            //camera.renderAdd(rect);
+            for (Chunk chunk : renderChunks) {
+                //camera.renderAdd(chunk);
+            }
 
-            //model.goWild(1);
             camera.renderView();
+
+            //camera.drawTile(chunk.getTiles()[1][0][0]);
+            //camera.drawTile(chunk.getTiles()[0][1][0]);
+            //camera.drawTile(chunk.getTiles()[0][0][1]);
 
             repaint();
         }
 
     }
 
+    public Camera getCamera() {
+        return camera;
+    }
 }

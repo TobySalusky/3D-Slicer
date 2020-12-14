@@ -83,7 +83,7 @@ public class Model {
                 String line = reader.nextLine();
 
                 if (line.length() >= 2) {
-                    if (line.startsWith("v")) {
+                    if (line.startsWith("v ")) {
                         points[pointIndex] = parsePoint(line.substring(2));
                         pointIndex++;
                     } else if (line.startsWith("f")) {

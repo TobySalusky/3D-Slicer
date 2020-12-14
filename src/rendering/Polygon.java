@@ -55,4 +55,22 @@ public class Polygon {
         Vector3D facing = getFacing();
         return new Point3D(from.x + facing.x, from.y + facing.y, from.z + facing.z);
     }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public LineSeg[] genEdges() {
+        LineSeg[] edges = new LineSeg[points.length];
+
+        for (int i = 0; i < points.length; i++) {
+            edges[i] = new LineSeg(points[i], points[(i + 1) % points.length]);
+        }
+
+        return edges;
+    }
+
+    public Point3D[] getPoints() {
+        return points;
+    }
 }

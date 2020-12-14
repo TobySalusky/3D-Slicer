@@ -33,6 +33,10 @@ public class Vector3D {
         return new Vector3D(x / mag, y / mag, z / mag);
     }
 
+    public Vector3D multed(float scalar) {
+        return new Vector3D(x * scalar, y * scalar, z * scalar);
+    }
+
     public float mag() {
         return (float) (Math.sqrt(x * x + y * y + z * z));
     }
@@ -106,4 +110,8 @@ public class Vector3D {
     public float angle() {
         return MathFunctions.findAngle(x, y);
     }*/
+    @Override
+    public String toString() {
+        return "<" + super.toString() + ": x = " + x + ", y = " + y + ", z = " + z + ">";
+    }
 }
