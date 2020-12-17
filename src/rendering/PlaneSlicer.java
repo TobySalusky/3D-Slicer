@@ -73,6 +73,9 @@ public class PlaneSlicer {
         List<Polygon> output = new ArrayList<>();
 
         while (cutEdges.size() > 0) {
+
+            if (cutEdges.size() == 1) break; // TODO: figure out why this is necessary (crashes in certain cases without [nextIndex of -1])
+
             current.add(cutEdges.get(0));
 
             while (true) {

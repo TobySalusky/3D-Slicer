@@ -19,7 +19,7 @@ public class Driver extends JPanel {
     private static final long serialVersionUID = 7802663692279468780L;
 
     private static JFrame frame;
-    protected boolean wPressed, aPressed, sPressed, dPressed, spacePressed, shiftPressed;
+    public boolean wPressed, aPressed, sPressed, dPressed, spacePressed, shiftPressed;
     private BufferedImage image;
     private Graphics g;
     private Timer timer;
@@ -29,7 +29,7 @@ public class Driver extends JPanel {
     //private rendering.Point3D[] points = new rendering.Point3D[100];
 
     //private rendering.Rect3D rect;
-    private Model model;
+    private List<Model> models = new ArrayList<>();
 
     private ChunkMap chunkMap;
 
@@ -49,9 +49,18 @@ public class Driver extends JPanel {
 
         addRenderChunks(-1, -1, -1, 1, 1, 1);
 
+        // testing:
+        Model model = new Model("models//mountains.obj");
+        //model.shade(new Vector3D(1,0,0), Color.lightGray);
+        model.polygons = PlaneSlicer.slices(model.polygons, new LineSeg(model.bounds()).x(), 70, new Color(55, 59, 92), Color.gray);
+        models.add(model);
 
-        model = new Model("models//gourd.obj", new Origin(0,0,0));
-        model.shade(new Vector3D(-1, -1, 0));
+        model = new Model("models//isoSphere.obj");
+        model.polygons = PlaneSlicer.slices(model.polygons, new LineSeg(model.bounds()).y(), 10, Color.red, Color.orange);
+        models.add(model);
+
+
+
 
         //timer
         timer = new Timer(0, new TimerListener());
@@ -59,11 +68,6 @@ public class Driver extends JPanel {
 
         // input
         input = new Input(this);
-
-        // testing:
-        Plane plane = new Plane(new Point3D(0, 0F, 0), new Vector3D(0, 1, 0));
-
-        model.polygons = PlaneSlicer.slices(model.polygons, new LineSeg(new Point3D(-1.5F, -1.5F, 0), new Point3D(1F, 1.5F, 0)), 20, Color.red, Color.blue);
     }
 
     public void addRenderChunks(int x1, int y1, int z1, int x2, int y2, int z2) {
@@ -144,26 +148,15 @@ public class Driver extends JPanel {
 
             move();
 
-            //camera.draw(points);
-            //camera.draw(rect);
-            //camera.draw(model);
-
-            //model.origin.move(-0.01F,0F,0F);
-
-            camera.preRender(model);
-            for (Chunk chunk : renderChunks) {
-                //camera.preRender(chunk);
+            for (Model model : models) {
+                camera.preRender(model);
             }
-            camera.renderAdd(model);
-            for (Chunk chunk : renderChunks) {
-                //camera.renderAdd(chunk);
+
+            for (Model model : models) {
+                camera.renderAdd(model);
             }
 
             camera.renderView();
-
-            //camera.drawTile(chunk.getTiles()[1][0][0]);
-            //camera.drawTile(chunk.getTiles()[0][1][0]);
-            //camera.drawTile(chunk.getTiles()[0][0][1]);
 
             repaint();
         }

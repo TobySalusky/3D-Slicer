@@ -1,6 +1,6 @@
 package game;
 
-import game.Driver;
+import rendering.Driver;
 
 import java.awt.event.*;
 
@@ -51,10 +51,6 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
             case KeyEvent.VK_SHIFT:
                 driver.shiftPressed = true;
                 break;
-
-                case KeyEvent.VK_M:
-                    driver.switchModes();
-                    break;
 
             case KeyEvent.VK_ESCAPE:
                 System.exit(0);

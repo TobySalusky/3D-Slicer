@@ -3,6 +3,7 @@ package rendering;
 import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Model {
@@ -11,22 +12,32 @@ public class Model {
 
     protected Polygon[] polygons;
 
-    protected Origin origin;
+    public Model(String fileName) {
 
-    public Model(String fileName, Origin origin) {
-
-        this.origin = origin;
         parseObj(fileName);
 
     }
 
-    public Model(Rect3D rect, Origin origin) {
-
-        this.origin = origin;
+    public Model(Rect3D rect) {
 
         polygons = rect.getPolygons();
-        origin.setPoints(rect.getPoints());
+    }
 
+    public Point3D[] bounds() {
+        Point3D min = polygons[0].points[0].copy();
+        Point3D max = min.copy();
+        for (Polygon polygon : polygons) {
+            for (Point3D p : polygon.points) {
+                min.x = Math.min(p.x, min.x);
+                min.y = Math.min(p.y, min.y);
+                min.z = Math.min(p.z, min.z);
+
+                max.x = Math.max(p.x, max.x);
+                max.y = Math.max(p.y, max.y);
+                max.z = Math.max(p.z, max.z);
+            }
+        }
+        return new Point3D[]{min, max};
     }
 
     public void shade(Vector3D light, Color color) {
@@ -70,7 +81,7 @@ public class Model {
             length.close();
 
 
-            Point3D[] points = new BoundedPoint[pointCount];
+            Point3D[] points = new Point3D[pointCount];
             int pointIndex = 0;
 
             polygons = new Polygon[faceCount];
@@ -95,8 +106,6 @@ public class Model {
             }
             reader.close();
 
-            origin.setPoints((BoundedPoint[]) points);
-
         } catch (FileNotFoundException e) {
 
             e.printStackTrace();
@@ -115,7 +124,7 @@ public class Model {
 
         float z = Float.parseFloat(line);
 
-        return new BoundedPoint(x, y, z, origin);
+        return new Point3D(x, y, z);
 
     }
 

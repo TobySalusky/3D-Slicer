@@ -56,7 +56,7 @@ public class Driver extends JPanel {
         timer.start();
 
         // input
-        input = new Input(this);
+        //input = new Input(this);
     }
 
     public void switchModes() {

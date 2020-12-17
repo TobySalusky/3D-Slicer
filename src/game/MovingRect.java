@@ -19,7 +19,8 @@ public class MovingRect extends Origin {
         this.height = height;
         this.length = length;
 
-        this.model = new Model(new Rect3D(this, width, height, length), this);
+        // old stuff ew
+        //this.model = new Model(new Rect3D(this, width, height, length), this);
     }
 
     public boolean collidesWithAt(MovingRect rect, float x, float y, float z) {

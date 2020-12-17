@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class Input implements MouseListener, MouseMotionListener, KeyListener {
 
-    private TestDriver driver;
+    private Driver driver;
 
     private float mouseX = 0;
     private float mouseY = 0;
@@ -12,7 +12,7 @@ public class Input implements MouseListener, MouseMotionListener, KeyListener {
     private float oldMouseX = 0;
     private float oldMouseY = 0;
 
-    public Input(TestDriver driver) {
+    public Input(Driver driver) {
         this.driver = driver;
 
         this.driver.addKeyListener(this);
